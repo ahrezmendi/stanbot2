@@ -2,9 +2,9 @@
   "name": "stanbot2",
   "version": "1.0.0",
   "description": "Bot 2.0 for the GamersWithJobs Discord server.",
-  "main": "main.ts",
+  "main": "main.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "node node_modules/jasmine/bin/jasmine"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,8 @@
   "dependencies": {
     "@types/node": "^13.7.1",
     "discord.js": "^11.5.1"
+  },
+  "devDependencies": {
+    "jasmine": "^3.5.0"
   }
 }
