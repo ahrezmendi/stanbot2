@@ -1,0 +1,27 @@
+{
+  "name": "stanbot2",
+  "version": "1.0.0",
+  "description": "Bot 2.0 for the GamersWithJobs Discord server.",
+  "main": "main.ts",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahrezmendi/stanbot2.git"
+  },
+  "keywords": [
+    "stanbot",
+    "gwj"
+  ],
+  "author": "Michael Stone",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ahrezmendi/stanbot2/issues"
+  },
+  "homepage": "https://github.com/ahrezmendi/stanbot2#readme",
+  "dependencies": {
+    "@types/node": "^13.7.1",
+    "discord.js": "^11.5.1"
+  }
+}
