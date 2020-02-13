@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const util = require('../../util');
 
 describe("Commands", function () {
     var registervoicecategory = require('../../commands/registervoicecategory');
@@ -11,6 +12,7 @@ describe("Commands", function () {
 
         beforeEach(function () {
             spyOn(msg, 'react');
+            spyOn(util, 'performAdminCheck');
         });
 
         it("should set the category", function () {
