@@ -3,6 +3,7 @@ module.exports = {
     description: 'Registers the channel category to use for creating voice channels with createvoice.',
     category: 'On-Demand Voice',
 	execute(message, args) {
+        if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
         if (!args.length) return message.channel.send(`You didn't specify a category channel, ${message.author}!`);
         this.category = args.join(' ').toLowerCase();
         message.react('👌');
