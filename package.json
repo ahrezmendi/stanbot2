@@ -4,6 +4,7 @@
   "description": "Bot 2.0 for the GamersWithJobs Discord server.",
   "main": "main.js",
   "scripts": {
+    "prod": "SET NODE_ENV=production && node .",
     "test": "node node_modules/jasmine/bin/jasmine"
   },
   "repository": {
@@ -22,7 +23,8 @@
   "homepage": "https://github.com/ahrezmendi/stanbot2#readme",
   "dependencies": {
     "@types/node": "^13.7.1",
-    "discord.js": "^11.5.1"
+    "discord.js": "^11.5.1",
+    "eslint": "^6.8.0"
   },
   "devDependencies": {
     "jasmine": "^3.5.0"
