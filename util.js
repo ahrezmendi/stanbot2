@@ -15,4 +15,11 @@ module.exports = {
     performAdminCheck(message) {
 		if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
 	},
+	performSuccessReact(message) {
+		message.react('👌');
+	},
+	performFailReact(message) {
+		message.react('❌');
+		message.channel.send(`🤷 ${message.author}, I don't understand that command.`);
+	},
 };

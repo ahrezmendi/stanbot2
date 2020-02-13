@@ -13,6 +13,18 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+// Load dev commands (only in development mode)
+// NODE_ENV is undefined when run with nothing set, general practice is to consider this "development" mode.
+if (!process.env.NODE_ENV) {
+	console.log('Running in dev mode, loading dev commands.');
+	const devCommands = fs.readdirSync('./dev').filter(file => file.endsWith('.js'));
+	for (const file of devCommands) {
+		console.log(`Processing dev command: ${file}`);
+		const command = require(`./dev/${file}`);
+		client.commands.set(command.name, command);
+	}
+}
+
 client.once('ready', () => {
 	console.log('Ready!');
 });
