@@ -2,7 +2,7 @@ module.exports = {
 	name: 'args-info',
     description: 'Returns the args you sent it (example args processing)',
     args: true,
-    usage: `<some> <args> <here>`,
+    usage: `args-info <some> <args> <here>`,
 	execute(message, args) {
 		if (!args.length) {
             return message.channel.send(`You didn't provide any arguments, ${message.author}!`);

@@ -17,6 +17,7 @@ client.once('ready', () => {
 	console.log('Ready!');
 });
 
+// Main entrypoint for all text commands the bot receives.
 client.on('message', message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
