@@ -1,8 +1,10 @@
+const util = require('../util');
+
 module.exports = {
     name: 'reload',
     description: 'Reloads a command',
     execute(message, args) {
-        if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
+        util.performAdminCheck(message);
         if (!args.length) return message.channel.send(`You didn't pass any command to reload, ${message.author}!`);
         const commandName = args[0].toLowerCase();
         const command = message.client.commands.get(commandName)
