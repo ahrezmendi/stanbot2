@@ -8,15 +8,15 @@ const reactions = new Discord.Collection()
     .set('sealion', 'https://tenor.com/view/bait-thatsbait-gif-5055384');
 
 module.exports = {
-	name: 'reaction',
+    name: 'reaction',
     description: "YOOOOOOOOOOOO!",
     args: true,
     cooldown: 30,
-	execute(message, args) {
+    execute(message, args) {
         if (!args.length) return message.channel.send(`I can't react to nothing, ${message.author}!`);
 
         for (let arg of args) {
             message.channel.send(reactions.get(arg));
         }
-	},
+    },
 };

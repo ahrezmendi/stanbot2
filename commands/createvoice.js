@@ -1,4 +1,4 @@
-var registry = require('./registervoicecategory.js');
+var settings = require('./settings.js');
 
 module.exports = {
     name: 'createvoice',
@@ -10,12 +10,13 @@ module.exports = {
     execute(message, args) {
         var channelName = args.join(' ');
 
+        // Check the category exists/is set correctly
+        let category = message.guild.channels.find(c => c.name.toLowerCase() == `${settings.voicecategory}` && c.type == "category");
+        if (!category) return message.channel.send(`Category channel does not exist. Was it registered correctly ${message.author}?`);
+
         // Create the channel
         message.guild.createChannel(channelName, { type: "voice" })
             .then(channel => {
-                let category = message.guild.channels.find(c => c.name.toLowerCase() == `${registry.category}` && c.type == "category");
-
-                if (!category) throw new Error("Category channel does not exist. Was it registered correctly?");
                 channel.setParent(category.id);
             }).catch(console.error);
 

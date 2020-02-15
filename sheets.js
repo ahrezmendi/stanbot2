@@ -4,27 +4,32 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const Discord = require('discord.js');
 const util = require('./util');
 
-// Some constants, such as the doc itself
-const sfvCharacterData = new Discord.Collection();
-const doc = new GoogleSpreadsheet('1nlbWon7SYhhO5TSpNx06qQrw2TRDEZ85HQrNherXioY');
-doc.useApiKey(apikey);
+// Internal constants, such as doc identifiers
+const sfvDoc = new GoogleSpreadsheet('1nlbWon7SYhhO5TSpNx06qQrw2TRDEZ85HQrNherXioY');
 
-const characters = ["fang", "dhalsim", "vega", "laura", "zangief", "karin", "rashid", "rmika",
-    "necalli", "ken", "birdie", "cammy", "mbison", "nash", "chunli", "ryu", "alex", "guile", "ibuki",
-    "balrog", "juri", "urien", "akuma", "kolin", "ed", "abigail", "menat", "zeku young", "zeku old", "sakura", "blanka",
-    "falke", "cody", "g", "sagat", "kage", "poison", "ehonda", "lucia", "gill", "seth"];
+// Exported variables, which can be used in other modules
+var sfvCharacterData = new Discord.Collection();
+
+// Set document API Keys here
+sfvDoc.useApiKey(apikey);
+
+// const characters = ["fang", "dhalsim", "vega", "laura", "zangief", "karin", "rashid", "rmika",
+//     "necalli", "ken", "birdie", "cammy", "mbison", "nash", "chunli", "ryu", "alex", "guile", "ibuki",
+//     "balrog", "juri", "urien", "akuma", "kolin", "ed", "abigail", "menat", "zeku young", "zeku old", "sakura", "blanka",
+//     "falke", "cody", "g", "sagat", "kage", "poison", "ehonda", "lucia", "gill", "seth"];
+const characters = ['cody'];
 
 module.exports = {
     sfvCharacterData,
     loadSFVData() {
         async function processWorksheets() {
-            await doc.loadInfo(); // loads document properties and worksheets
-            console.log(doc.title);
+            await sfvDoc.loadInfo(); // loads document properties and worksheets
+            console.log(sfvDoc.title);
             console.log("SF5 sheet ready for access.");
 
-            if (!doc.sheetsByIndex.length) return console.log("Something went wrong loading the spreadsheet.");
+            if (!sfvDoc.sheetsByIndex.length) return console.log("Something went wrong loading the spreadsheet.");
 
-            for (const sheet of doc.sheetsByIndex) {
+            for (const sheet of sfvDoc.sheetsByIndex) {
                 // Sheet titles include punctuation, which I don't want. Get rid of it.
                 var cleanTitle = sheet.title.replace(/[^\w\s]/g, '');
 
@@ -82,5 +87,8 @@ module.exports = {
         }
 
         return processWorksheets().catch(console.error);
+    },
+    refreshSFVData() {
+        return this.loadSFVData();
     }
 }

@@ -28,8 +28,17 @@ module.exports = {
     args: true,
     usage: 'sfv [character command [specific move]]',
     execute(message, args) {
-        // If the user asked for stats, return stats data
-        var stats = sheetsUtil.sfvCharacterData;
+        // Special admin command - refreshes data from the Google Sheets sheet.
+        if (args[0].toLowerCase() == 'refresh') {
+            util.performAdminCheck(message);
+            // Refreshes the data from the spreadsheet. This is slow, so don't do it often. It will also block the bot.
+            async function refreshData() {
+                await sheetsUtil.refreshSFVData();
+            }
+
+            refreshData();
+            return message.channel.send(`SFV character data is now being refreshed, ${message.author}. Please give me a bit to finish this.`);
+        }
 
         // Need a character name from the user
         if (!args[0]) {
