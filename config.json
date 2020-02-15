@@ -1,5 +1,5 @@
 {
 	"prefix": "!",
-	"token": "your-discord-bot-token-here",
-	"apikey": "your-google-api-key-here"
+	"token": "your-discord-token-here",
+	"apikey": "your-api-key-here"
 }
