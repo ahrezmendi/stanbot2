@@ -13,11 +13,11 @@ var sfvCharacterData = new Discord.Collection();
 // Set document API Keys here
 sfvDoc.useApiKey(apikey);
 
-// const characters = ["fang", "dhalsim", "vega", "laura", "zangief", "karin", "rashid", "rmika",
-//     "necalli", "ken", "birdie", "cammy", "mbison", "nash", "chunli", "ryu", "alex", "guile", "ibuki",
-//     "balrog", "juri", "urien", "akuma", "kolin", "ed", "abigail", "menat", "zeku young", "zeku old", "sakura", "blanka",
-//     "falke", "cody", "g", "sagat", "kage", "poison", "ehonda", "lucia", "gill", "seth"];
-const characters = ['cody'];
+const characters = ["fang", "dhalsim", "vega", "laura", "zangief", "karin", "rashid", "rmika",
+    "necalli", "ken", "birdie", "cammy", "mbison", "nash", "chunli", "ryu", "alex", "guile", "ibuki",
+    "balrog", "juri", "urien", "akuma", "kolin", "ed", "abigail", "menat", "zeku young", "zeku old", "sakura", "blanka",
+    "falke", "cody", "g", "sagat", "kage", "poison", "ehonda", "lucia", "gill", "seth"];
+// const characters = ['cody'];
 
 module.exports = {
     sfvCharacterData,
