@@ -24,7 +24,6 @@ const props = new Map([
 module.exports = {
     name: 'sfv',
     description: 'Rise up.',
-    cooldown: 60,
     args: true,
     usage: `character_name command [specific move]]\n\n
         For example: "!sfv ehonda normal" will give you a list of normal moves. 

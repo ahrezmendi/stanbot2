@@ -53,21 +53,26 @@ client.on('message', message => {
 		cooldowns.set(command.name, new Discord.Collection());
 	}
 
-	const now = Date.now();
-	const timestamps = cooldowns.get(command.name);
-	const cooldownAmount = (command.cooldown || 3) * 1000;
+	console.log(cooldowns);
+
+	let now = Date.now();
+	let timestamps = cooldowns.get(command.name);
+	let cooldownAmount = (command.cooldown || 1) * 1000;
 
 	if (timestamps.has(message.author.id)) {
-		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+		let expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
 		if (now < expirationTime) {
-			const timeLeft = (expirationTime - now) / 1000;
+			let timeLeft = (expirationTime - now) / 1000;
 			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
 		}
 
 		timestamps.set(message.author.id, now);
 		setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 	}
+
+	timestamps.set(message.author.id, now);
+	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 	// Execute
 	try {
