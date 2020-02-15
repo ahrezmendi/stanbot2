@@ -9,11 +9,10 @@ const sfvCharacterData = new Discord.Collection();
 const doc = new GoogleSpreadsheet('1nlbWon7SYhhO5TSpNx06qQrw2TRDEZ85HQrNherXioY');
 doc.useApiKey(apikey);
 
-// const characters = ["f.a.n.g", "dhalsim", "vega", "laura", "zangief", "karin", "rashid", "r. mika",
-//     "necalli", "ken", "birdie", "cammy", "m. bison", "nash", "chun-li", "ryu", "alex", "guile", "ibuki",
-//     "balrog", "juri", "urien", "akuma", "kolin", "ed", "abigail", "menat", "zeku", "sakura", "blanka",
-//     "falke", "cody", "g", "sagat", "kage", "poison", "e. honda", "lucia", "gill", "seth"];
-const characters = ['ryu', 'cammy', 'chun-li', 'alex', 'e. honda'];
+const characters = ["fang", "dhalsim", "vega", "laura", "zangief", "karin", "rashid", "rmika",
+    "necalli", "ken", "birdie", "cammy", "mbison", "nash", "chunli", "ryu", "alex", "guile", "ibuki",
+    "balrog", "juri", "urien", "akuma", "kolin", "ed", "abigail", "menat", "zeku young", "zeku old", "sakura", "blanka",
+    "falke", "cody", "g", "sagat", "kage", "poison", "ehonda", "lucia", "gill", "seth"];
 
 module.exports = {
     sfvCharacterData,
@@ -26,27 +25,28 @@ module.exports = {
             if (!doc.sheetsByIndex.length) return console.log("Something went wrong loading the spreadsheet.");
 
             for (const sheet of doc.sheetsByIndex) {
-                // For every sheet I want the title (it has the character name) and all the cells. Split it now for convience.
-                var splitTitle = sheet.title.split(/(?=[A-Z])/);
-                console.log(`Sheet title: ${sheet.title}`);
-                console.log(`Split sheet title: ${splitTitle}`);
+                // Sheet titles include punctuation, which I don't want. Get rid of it.
+                var cleanTitle = sheet.title.replace(/[^\w\s]/g, '');
 
-                // KNOWN BROKEN CASES:
-                // Zeku (because sheets are named Zeku (Old)Normal, etc. etc.)
-                // Anybody with punctuation (R. Mika, E. Honda, etc.)
+                // For every sheet I want the title, both for the character name and the sheet type.
+                // The character name and sheet type are capitalized, but some characters have multiple caps (e.g. E. Honda).
+                // The last item will always be the sheet type though, so popping that off will give exactly what is wanted.
+                var splitTitle = cleanTitle.split(/(?=[A-Z])/);
 
-                // The first item of the split title is the character name. Check here to ensure it's in the character list. If not, skip.
-                const charName = splitTitle[0].toLowerCase();
-                console.log(`Now processing ${charName}`);
+                // Character data is split across 4 sheets, which I'm calling the sheetType:
+                // Normal, Trigger1, Trigger2, Stats
+                // Normal is base data, each trigger sheet is what changes when in that VT, and stats are stats (e.g. health, stun, etc.)
+                const sheetType = splitTitle.pop().toLowerCase();
+
+                // Character name is all that's left now
+                const charName = splitTitle.join('').toLowerCase();
+
+                // Check to make sure the character is in the configured character list
+                console.log(`Now processing ${charName} ${sheetType}`);
                 if (!characters.includes(charName)) {
                     console.log("Character not found in character list.");
                     continue;
                 }
-
-                // The 2nd item of the split title is the sheet type. This matters since character data is split across 4 sheets:
-                // Normal, Trigger1, Trigger2, Stats
-                // Normal is base data, each trigger sheet is what changes when in that VT, and stats are stats (e.g. health, stun, etc.)
-                const sheetType = splitTitle[1].toLowerCase();
 
                 // Now we have enough to build a Collection for this sheet. This will contain pairs of moveName:GoogleSpreadsheetRow.
                 var sheetData = new Discord.Collection();
@@ -54,7 +54,10 @@ module.exports = {
                 for (const row of rows) {
                     // Normal, Trigger1, and Trigger1 have moveName as the first column.
                     // Stats has just name.
+                    // Edge Case: Turns out Gill has 'move' instead of 'moveName'. So check that after assigning.
                     var keyName = row.hasOwnProperty('moveName') ? row.moveName : row.name;
+                    if (!keyName) keyName = row.move; // Thanks, Gill. Emperors always gotta be different.
+                    if (!keyName) console.error('Critical error while parsing SFV spreadsheet. Someone screwed up.');
                     sheetData.set(keyName, row);
                 }
 
@@ -69,9 +72,9 @@ module.exports = {
                     sfvCharacterData.get(charName).set(sheetType, sheetData);
                 }
 
-                // Google has quota for API access (100 requests per 100 seconds). To handle this, the bot will sleep 5 seconds after every sheet load.
-                console.log("Sleeping 5 seconds before next sheet (rate limits).");
-                await util.sleep(5000);
+                // Google has quota for API access (100 requests per 100 seconds). To handle this, the bot will sleep 2 seconds after every sheet load.
+                console.log("Sleeping 2 seconds before next sheet (rate limits).");
+                await util.sleep(2000);
             }
 
             // Done (I think?)
