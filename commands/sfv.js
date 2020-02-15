@@ -79,6 +79,9 @@ module.exports = {
                 // Retrieve that character stats sheet from the data collection
                 var stats = sheetsUtil.sfvCharacterData.get(charName).get('stats');
 
+                // If no data, inform the user
+                if(!stats) return message.channel.send(`I'm afraid I don't have any data for ${charName} ${command}`);
+
                 // Create an embed and populate with the data
                 var embed = new Discord.RichEmbed()
                     .setColor('#0099ff')
@@ -95,10 +98,12 @@ module.exports = {
                 // Retrieve normal move data
                 var moves = sheetsUtil.sfvCharacterData.get(charName).get('normal');
 
+                // If no data, inform the user
+                if(!moves) return message.channel.send(`I'm afraid I don't have any data for ${charName} ${command}`);
+
                 // Embeds are limited to 25 fields. That's enough for specific move data, but not for all moves.
                 // So if the user just requested moves (normal) then build a chat message which lists the moves.
                 // If they requested a specific move, that can be an embed.
-
                 if (isSpecificMove) {
                     // Create an embed and populate with the data
                     var embed = new Discord.RichEmbed()
@@ -163,6 +168,9 @@ module.exports = {
                 // Retrieve VT1 move data
                 var vt1moves = sheetsUtil.sfvCharacterData.get(charName).get('trigger1');
 
+                // If no data, inform the user
+                if(!vt1moves) return message.channel.send(`I'm afraid I don't have any data for ${charName} ${command}`);
+
                 // Create an embed and populate with the data
                 var embed = new Discord.RichEmbed()
                     .setColor('#0099ff')
@@ -178,6 +186,9 @@ module.exports = {
             case 'trigger2':
                 // Retrieve VT1 move data
                 var vt2moves = sheetsUtil.sfvCharacterData.get(charName).get('trigger2');
+
+                // If no data, inform the user
+                if(!vt2moves) return message.channel.send(`I'm afraid I don't have any data for ${charName} ${command}`);
 
                 // Create an embed and populate with the data
                 var embed = new Discord.RichEmbed()
