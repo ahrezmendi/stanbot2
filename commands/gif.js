@@ -11,7 +11,7 @@ module.exports = {
     name: 'gif',
     description: "YOOOOOOOOOOOO!",
     args: true,
-    cooldown: 30,
+    cooldown: 5,
     execute(message, args) {
         if (!args.length) return message.channel.send(`I can't react to nothing, ${message.author}!`);
 
