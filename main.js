@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { prefix, token } = require('./config.json');
 const Discord = require('discord.js');
+const sheetsUtil = require('./sheets');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -26,6 +27,7 @@ if (!process.env.NODE_ENV) {
 }
 
 client.once('ready', () => {
+	sheetsUtil.loadSFVData();
 	console.log('Ready!');
 });
 

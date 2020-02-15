@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 module.exports = {
 	handleVoiceStateUpdate(client) {
 		// Handling for voice channel activities
@@ -12,7 +14,7 @@ module.exports = {
 			}
 		});
 	},
-    performAdminCheck(message) {
+	performAdminCheck(message) {
 		if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
 	},
 	performSuccessReact(message) {
@@ -21,5 +23,12 @@ module.exports = {
 	performFailReact(message) {
 		message.react('❌');
 		message.channel.send(`🤷 ${message.author}, I don't understand that command.`);
+	},
+	sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	},
+	capitalize(string) {
+		if (typeof string !== 'string') return string;
+		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 };

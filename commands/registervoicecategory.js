@@ -8,6 +8,6 @@ module.exports = {
         util.performAdminCheck(message);
         if (!args.length) return message.channel.send(`You didn't specify a category channel, ${message.author}!`);
         this.category = args.join(' ').toLowerCase();
-        message.react('👌');
+        util.performSuccessReact(message);
     },
 };
