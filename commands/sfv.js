@@ -26,7 +26,13 @@ module.exports = {
     description: 'Rise up.',
     cooldown: 60,
     args: true,
-    usage: 'sfv [character command [specific move]]',
+    usage: `character_name command [specific move]]\n\n
+        For example: "!sfv ehonda normal" will give you a list of normal moves. 
+        "!sfv zeku young normal Bushin Sho LP" will give you stats about a specific move. 
+        Note that move names are case sensitive, and you MUST include the button (LP, LK, etc.).\n\n
+        You can also use community names for moves, e.g. "!sfv ryu normal overhead".\n\n
+        All data courtesy of the SFV FAT Spreadsheet here:\n
+        https://docs.google.com/spreadsheets/d/1nlbWon7SYhhO5TSpNx06qQrw2TRDEZ85HQrNherXioY/edit?usp=sharing`,
     execute(message, args) {
         // Special admin command - refreshes data from the Google Sheets sheet.
         if (args[0].toLowerCase() == 'refresh') {
@@ -45,8 +51,28 @@ module.exports = {
             util.performFailReact(message);
             return message.channel.send(`You have to specify a character, ${message.author}`);
         }
+
         var charName = args[0].toLowerCase();
-        var command = args[1].toLowerCase();
+        var command;
+        var isSpecificMove;
+        var userProvidedMoveName;
+
+        // Edge case: Zeku is really 2 characters, "zeku young" and "zeku old" which occupies args[1] as well.
+        if (charName == 'zeku') {
+            charName = charName.concat(` ${args[1]}`);
+            command = args[2].toLowerCase();
+            isSpecificMove = !args[3] ? false : true;
+            userProvidedMoveName = args.slice(3).join(' ');
+        } else {
+            command = args[1].toLowerCase();
+            isSpecificMove = !args[2] ? false : true;
+            userProvidedMoveName = args.slice(2).join(' ');
+        }
+
+        console.log(charName);
+        console.log(command);
+        console.log(isSpecificMove);
+        console.log(userProvidedMoveName);
 
         switch (command) {
             case 'stats':
@@ -72,9 +98,6 @@ module.exports = {
                 // Embeds are limited to 25 fields. That's enough for specific move data, but not for all moves.
                 // So if the user just requested moves (normal) then build a chat message which lists the moves.
                 // If they requested a specific move, that can be an embed.
-                var userProvidedMoveName = args.slice(2).join(' ');
-                console.log(userProvidedMoveName);
-                var isSpecificMove = !args[2] ? false : true;
 
                 if (isSpecificMove) {
                     // Create an embed and populate with the data

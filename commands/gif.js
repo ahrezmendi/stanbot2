@@ -1,4 +1,4 @@
-// All the favorite reactions, in one easy place (not really, hard coded)
+// All the favorite gifs, in one easy place (not really, hard coded)
 const Discord = require('discord.js');
 
 const reactions = new Discord.Collection()
@@ -8,7 +8,7 @@ const reactions = new Discord.Collection()
     .set('sealion', 'https://tenor.com/view/bait-thatsbait-gif-5055384');
 
 module.exports = {
-    name: 'reaction',
+    name: 'gif',
     description: "YOOOOOOOOOOOO!",
     args: true,
     cooldown: 30,

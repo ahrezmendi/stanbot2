@@ -3,7 +3,7 @@ const util = require('../util');
 module.exports = {
 	name: 'kick',
 	aliases: ['hammer', 'boot'],
-	description: 'Kick a user. Only usable if you are an admin.',
+	description: 'Kick a user. ADMIN ONLY.',
 	guildOnly: true,
 	execute(message, args) {
 		util.performAdminCheck(message);

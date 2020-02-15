@@ -6,7 +6,7 @@ const settingsWhitelist = ['voicecategory'];
 // You can then read it from anywhere else by requiring settings.
 module.exports = {
     name: 'settings',
-    description: 'Allows you to configure various settings for Stanbot (e.g. voice category).',
+    description: 'Allows you to configure various settings for Stanbot (e.g. voice category). ADMIN ONLY.',
     voicecategory: 'on-demand voice',
     execute(message, args) {
         util.performAdminCheck(message);
