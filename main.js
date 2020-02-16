@@ -16,6 +16,9 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	sheetsUtil.loadSFVData();
+	client.user.setPresence({ game: { name: 'Use !help to see what I can do! (DM or in any text channel)' }, status: 'available' })
+		.then(console.log)
+		.catch(console.error);
 	console.log('Ready!');
 });
 
