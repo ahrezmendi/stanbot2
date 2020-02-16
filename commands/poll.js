@@ -25,5 +25,8 @@ module.exports = {
                 sentMessage.react(optionArray.pop());
             }
         }).catch(console.error);
+
+        // Remove the command message
+        message.delete();
     },
 };
