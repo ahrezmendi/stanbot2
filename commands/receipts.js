@@ -55,8 +55,6 @@ module.exports = {
                 userReceipts = receipts.get(message.author);
                 var msgText = `Here are all your receipts ${message.author}\n\n`;
 
-                console.log(userReceipts);
-
                 for (let i = 0; i < userReceipts.length; i++) {
                     msgText += `Receipt #${i + 1}:\n${userReceipts[i]}\n\n`;
                 }

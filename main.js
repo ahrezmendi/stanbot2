@@ -56,8 +56,6 @@ client.on('message', message => {
 		cooldowns.set(command.name, new Discord.Collection());
 	}
 
-	console.log(cooldowns);
-
 	let now = Date.now();
 	let timestamps = cooldowns.get(command.name);
 	let cooldownAmount = (command.cooldown || 1) * 1000;
