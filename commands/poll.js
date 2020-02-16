@@ -19,7 +19,7 @@ module.exports = {
         optionArray.shift();
 
         // Send the poll text to the channel
-        message.channel.send(pollText.join(' ')).then(sentMessage => {
+        message.channel.send(`${pollText.join(' ')} (Poll requested by ${message.author})`).then(sentMessage => {
             // Now all reaction options can be added until the array is exhausted
             while(optionArray) {
                 sentMessage.react(optionArray.pop());
