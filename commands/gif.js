@@ -23,7 +23,11 @@ module.exports = {
         if (!args.length) return message.channel.send(`I can't react to nothing, ${message.author}!`);
 
         for (let arg of args) {
-            message.channel.send(reactions.get(arg));
+            if (Array.from(reactions.keys()).includes(arg)) {
+                message.channel.send(reactions.get(arg));
+            } else {
+                message.channel.send(`I don't have a reaction for ${arg}.`);
+            }
         }
     },
 };
