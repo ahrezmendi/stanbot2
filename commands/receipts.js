@@ -78,7 +78,7 @@ module.exports = {
                 receipts.set(message.author, userReceipts);
                 break;
             default:
-                break;
+                return util.performFailReact(message);
         }
         util.performSuccessReact(message);
     },
