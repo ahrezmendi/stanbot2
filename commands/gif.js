@@ -17,6 +17,8 @@ module.exports = {
     description: "YOOOOOOOOOOOO!",
     args: true,
     cooldown: 5,
+    usage: `You can specify a reaction, and I'll respond with the appropriate gif. It's like the Favorites section of the gif picker, but not platform specific.
+        Here are the reactions I can do:\n${Array.from(reactions.keys()).join(' ')}`,
     execute(message, args) {
         if (!args.length) return message.channel.send(`I can't react to nothing, ${message.author}!`);
 

@@ -18,15 +18,18 @@ module.exports = {
         // Slice includes the delimiter in the option array, so discard it now
         optionArray.shift();
 
-        // Send the poll text to the channel
-        message.channel.send(`${pollText.join(' ')} (Poll requested by ${message.author})`).then(sentMessage => {
-            // Now all reaction options can be added until the array is exhausted
-            while(optionArray) {
-                sentMessage.react(optionArray.pop());
-            }
-        }).catch(console.error);
-
         // Remove the command message
         message.delete();
+
+        async function sendPollToChannel() {
+            // Send the poll text to the channel
+            var sentMessage = await message.channel.send(`${pollText.join(' ')} (Poll requested by ${message.author})`);
+            // Now all reaction options can be added until the array is exhausted
+            while (optionArray) {
+                await sentMessage.react(optionArray.shift());
+            }
+        };
+
+        sendPollToChannel().catch(console.error);
     },
 };
