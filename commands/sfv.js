@@ -26,7 +26,7 @@ module.exports = {
     description: 'Rise up.',
     args: true,
     usage: `character_name command [specific move]]\n\n
-        For example: "!sfv ehonda normal" will give you a list of normal moves. 
+        For example: "!sfv ehonda normal" will give you a list of normal moves (via DM to avoid spamming channels). 
         "!sfv zeku young normal Bushin Sho LP" will give you stats about a specific move. 
         Note that move names are case sensitive, and you MUST include the button (LP, LK, etc.).\n\n
         You can also use community names for moves, e.g. "!sfv ryu normal overhead".\n\n
@@ -67,11 +67,6 @@ module.exports = {
             isSpecificMove = !args[2] ? false : true;
             userProvidedMoveName = args.slice(2).join(' ');
         }
-
-        console.log(charName);
-        console.log(command);
-        console.log(isSpecificMove);
-        console.log(userProvidedMoveName);
 
         switch (command) {
             case 'stats':
@@ -159,7 +154,7 @@ module.exports = {
                         }
                     }
 
-                    message.channel.send(msg);
+                    message.author.send(msg);
                 }
 
                 break;
