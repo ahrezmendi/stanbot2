@@ -22,7 +22,9 @@ module.exports = {
 	},
 	performFailReact(message) {
 		message.react('❌');
-		message.channel.send(`🤷 ${message.author}, I don't understand that command.`);
+	},
+	replyToUserWithMessage(message, replyText) {
+		message.author.send(`${replyText}`);
 	},
 	sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
@@ -30,5 +32,8 @@ module.exports = {
 	capitalize(string) {
 		if (typeof string !== 'string') return string;
 		return string.charAt(0).toUpperCase() + string.slice(1);
+	},
+	titleCase(string) {
+		string.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
 	},
 };

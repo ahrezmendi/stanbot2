@@ -27,7 +27,7 @@ module.exports = {
         You can get a specific receipt (in the channel), e.g. '!receipts retrieve 3' will get the 3rd receipt you stored (or tell you if you didn't store one).\n
         You can delete a receipt, e.g. '!receipts delete 4' will delete the 4th receipt you stores (or tell you if you don't have that many).`,
     execute(message, args) {
-        if (!args.length) return message.channel.send(`I need to know if you want to store, list, or retrieve receipts ${message.author}!`);
+        if (!args.length) return util.replyToUserWithMessage(message, `I need to know if you want to store, list, or retrieve receipts ${message.author}!`);
 
         var cmd = args[0].toLowerCase();
         let userReceipts;

@@ -22,14 +22,14 @@ module.exports = {
         if (!args.length) {
             // Strip the @ so this doesn't spam people
             roleNames.forEach(function (value) { value.replace('@', '') });
-            return message.channel.send(`You can join any of the following roles ${message.author}:\n${roleNames}`);
+            return util.replyToUserWithMessage(message, `You can join any of the following roles ${message.author}:\n${roleNames}`);
         }
 
         // If not listing roles, then minimum # of args is 2 (command + role to act on)
         if (!args[1]) {
             // Make sure they gave you a role to join
             util.performFailReact(message);
-            return message.channel.send(`You have to give me an instruction and tell me what role to use, ${message.author}`);
+            return util.replyToUserWithMessage(message, `You have to give me an instruction and tell me what role to use, ${message.author}`);
         }
 
         // Get the role name. Role names can be many strings, so assume the rest of the args are the role name.
@@ -38,7 +38,7 @@ module.exports = {
         // Make sure it's in our valid role list
         if (!roleNames.includes(roleToJoin)) {
             util.performFailReact(message);
-            return message.channel.send(`I'm sorry ${message.author}, I'm afraid I can't do that. (Role doesn't exist, or I can't assign it)`);
+            return util.replyToUserWithMessage(message, `I'm sorry ${message.author}, I'm afraid I can't do that. (Role doesn't exist, or I can't assign it)`);
         }
 
         // Get the actual Role object and join

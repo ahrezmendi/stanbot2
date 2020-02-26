@@ -1,4 +1,5 @@
 const { prefix } = require('../config.json');
+const util = require('../util');
 
 module.exports = {
     name: 'help',
@@ -17,11 +18,12 @@ module.exports = {
             return message.author.send(data, { split: true })
                 .then(() => {
                     if (message.channel.type === 'dm') return;
-                    message.reply('I\'ve sent you a DM with all my commands. I hope you find it helpful!');
+                    util.performSuccessReact(message);
                 })
                 .catch(error => {
                     console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('it seems like I can\'t DM you! Do you have DMs disabled?');
+                    message.reply('It seems like I can\'t DM you! Do you have DMs disabled?');
+                    util.performFailReact(message);
                 });
         }
 
@@ -29,7 +31,8 @@ module.exports = {
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
         if (!command) {
-            return message.reply('that\'s not a valid command!');
+            util.performFailReact(message);
+            return util.replyToUserWithMessage(message, 'That\'s not a valid command!');
         }
 
         data.push(`**Name:** ${command.name}`);
@@ -41,5 +44,7 @@ module.exports = {
         data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
 
         message.author.send(data, { split: true });
+
+        util.performSuccessReact(message);
     },
 };

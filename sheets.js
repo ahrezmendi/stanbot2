@@ -17,7 +17,7 @@ const characters = ["fang", "dhalsim", "vega", "laura", "zangief", "karin", "ras
     "necalli", "ken", "birdie", "cammy", "mbison", "nash", "chunli", "ryu", "alex", "guile", "ibuki",
     "balrog", "juri", "urien", "akuma", "kolin", "ed", "abigail", "menat", "zeku young", "zeku old", "sakura", "blanka",
     "falke", "cody", "g", "sagat", "kage", "poison", "ehonda", "lucia", "gill", "seth"];
-// const characters = ['cody'];
+// const characters = ['sakura'];
 
 module.exports = {
     sfvCharacterData,
@@ -63,7 +63,7 @@ module.exports = {
                     var keyName = row.hasOwnProperty('moveName') ? row.moveName : row.name;
                     if (!keyName) keyName = row.move; // Thanks, Gill. Emperors always gotta be different.
                     if (!keyName) console.error('Critical error while parsing SFV spreadsheet. Someone screwed up.');
-                    sheetData.set(keyName, row);
+                    sheetData.set(keyName.toLowerCase(), row);
                 }
 
                 // Check if this character is already in the data (e.g. from loading other sheet data)

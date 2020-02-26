@@ -61,11 +61,11 @@ module.exports = {
             charName = charName.concat(` ${args[1]}`);
             command = args[2].toLowerCase();
             isSpecificMove = !args[3] ? false : true;
-            userProvidedMoveName = args.slice(3).join(' ');
+            userProvidedMoveName = args.slice(3).join(' ').toLowerCase();
         } else {
             command = args[1].toLowerCase();
             isSpecificMove = !args[2] ? false : true;
-            userProvidedMoveName = args.slice(2).join(' ');
+            userProvidedMoveName = args.slice(2).join(' ').toLowerCase();
         }
 
         switch (command) {
@@ -113,14 +113,12 @@ module.exports = {
                     } else {
                         // TODO(michaelstone):This is slow, is it worth maintaining another collection indexed on cmnCmd?
                         for (let [key, value] of moves) {
-                            if (value.cmnCmd.toLowerCase() == userProvidedMoveName.toLowerCase()) {
+                            if (value.cmnCmd.toLowerCase() == userProvidedMoveName) {
                                 move = moves.get(key);
                                 break;
                             }
                         }
                     }
-
-                    console.log(move);
 
                     for (let [key, value] of Object.entries(move)) {
                         // Skip anything not in the whitelist
