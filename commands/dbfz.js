@@ -16,7 +16,7 @@ const props = new Map([
 
 module.exports = {
     name: 'dbfz',
-    description: 'Kamehameha!',
+    description: 'Kamehameha! (This command is still in alpha, ping @Ahrezmendi for how to use it).',
     args: true,
     usage: `TODO\n\n
         All data courtesy of the TURTLEON's Frame Data Spreadsheet here:\n
