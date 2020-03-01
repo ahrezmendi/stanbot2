@@ -18,12 +18,16 @@ module.exports = {
 		if (!message.member.hasPermission('ADMINISTRATOR')) {
 			message.react('❌');
 			return false;
+		} else {
+			return true;
 		}
 	},
 	performDmCheck(message) {
 		if (!message.guild) {
 			message.author.send(`I can't perform that action via DM.`);
 			return false;
+		} else {
+			return true;
 		}
 	},
 	performSuccessReact(message) {
