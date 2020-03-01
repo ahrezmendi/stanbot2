@@ -1,4 +1,5 @@
 var settings = require('./settings.js');
+const util = require('../util');
 
 module.exports = {
     name: 'createvoice',
@@ -9,6 +10,9 @@ module.exports = {
     cooldown: 60,
     execute(message, args) {
         var channelName = args.join(' ');
+
+        // Can't be used in DM
+        if (!util.performDmCheck(message)) return;
 
         // Check the category exists/is set correctly
         let category = message.guild.channels.find(c => c.name.toLowerCase() == `${settings.voicecategory}` && c.type == "category");

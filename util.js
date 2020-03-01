@@ -15,7 +15,16 @@ module.exports = {
 		});
 	},
 	performAdminCheck(message) {
-		if (!message.member.hasPermission('ADMINISTRATOR')) return message.react('❌');
+		if (!message.member.hasPermission('ADMINISTRATOR')) {
+			message.react('❌');
+			return false;
+		}
+	},
+	performDmCheck(message) {
+		if (!message.guild) {
+			message.author.send(`I can't perform that action via DM.`);
+			return false;
+		}
 	},
 	performSuccessReact(message) {
 		message.react('👌');

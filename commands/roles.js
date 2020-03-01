@@ -5,6 +5,9 @@ module.exports = {
     description: 'Manage your roles on the server. You can join a role via !roles join <role name>, or see joinable roles by just !roles',
     usage: `roles [join <role name>]`,
     execute(message, args) {
+        // Can't be used in DM
+        if (!util.performDmCheck(message)) return;
+
         // Get the bots role position. It can only assign roles *below* it (Discord requirement)
         let myRole = message.guild.roles.find(role => role.name === "Stanbot 2.0");
 

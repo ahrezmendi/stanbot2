@@ -4,7 +4,7 @@ module.exports = {
     name: 'reload',
     description: 'Reloads a command',
     execute(message, args) {
-        util.performAdminCheck(message);
+        if (!util.performAdminCheck(message)) return;
         if (!args.length) return message.channel.send(`You didn't pass any command to reload, ${message.author}!`);
         const commandName = args[0].toLowerCase();
         const command = message.client.commands.get(commandName)

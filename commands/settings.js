@@ -9,7 +9,7 @@ module.exports = {
     description: 'Allows you to configure various settings for Stanbot (e.g. voice category). ADMIN ONLY.',
     voicecategory: 'on-demand voice',
     execute(message, args) {
-        util.performAdminCheck(message);
+        if (!util.performAdminCheck(message)) return;
         if (!args.length) return message.author.send(`You didn't specify a settings command, ${message.author}!`);
 
         var command = args[0];

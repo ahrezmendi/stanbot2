@@ -7,6 +7,12 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
+const activities_list = [
+	'!help to see what I can do! (DM or in any text channel)',
+	'!help',
+	'!help for great awesome!'
+];
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	console.log(`Processing command file: ${file}`);
@@ -15,10 +21,13 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
-	sheetsUtil.loadSFVData();
-	client.user.setPresence({ game: { name: 'Use !help to see what I can do! (DM or in any text channel)' }, status: 'available' })
-		.then(console.log)
-		.catch(console.error);
+	setInterval(() => {
+		const index = Math.floor(Math.random() * (activities_list.length - 1) + 1);
+		client.user.setPresence({ game: { name: activities_list[index] }, status: 'available' })
+			.then(console.log)
+			.catch(console.error);
+	}, 10000000); // Runs this every 10,000 seconds.
+	sheetsUtil.loadSpreadsheetData();
 	console.log('Ready!');
 });
 

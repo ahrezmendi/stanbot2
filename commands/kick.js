@@ -6,7 +6,7 @@ module.exports = {
 	description: 'Kick a user. ADMIN ONLY.',
 	guildOnly: true,
 	execute(message, args) {
-		util.performAdminCheck(message);
+		if (!util.performAdminCheck(message)) return;
 		if (!message.mentions.users.size) return message.reply('You need to tag a user in order to kick them.');
 
 		const kickList = message.mentions.users.map(user => {

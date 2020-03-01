@@ -4,10 +4,6 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 const sheetsUtil = require('../sheets');
 const Discord = require('discord.js');
 
-// Some constants, such as the doc itself
-const doc = new GoogleSpreadsheet('1nlbWon7SYhhO5TSpNx06qQrw2TRDEZ85HQrNherXioY');
-doc.useApiKey(apikey);
-
 // List of the move properties we actually give a shit about
 const props = new Map([
     ['moveName', 'Move'],
@@ -111,7 +107,7 @@ module.exports = {
                     if (moves.has(userProvidedMoveName)) {
                         move = moves.get(userProvidedMoveName);
                     } else {
-                        // TODO(michaelstone):This is slow, is it worth maintaining another collection indexed on cmnCmd?
+                        // TODO - This is slow, is it worth maintaining another collection indexed on cmnCmd?
                         for (let [key, value] of moves) {
                             if (value.cmnCmd.toLowerCase() == userProvidedMoveName) {
                                 move = moves.get(key);
@@ -123,7 +119,6 @@ module.exports = {
                     for (let [key, value] of Object.entries(move)) {
                         // Skip anything not in the whitelist
                         if (propsKeyArr.includes(key)) {
-                            console.log(key);
                             // Add the property
                             embed.addField(`${props.get(key)}`, `${value ? value : 'N/A'}`);
                         }
@@ -132,7 +127,7 @@ module.exports = {
                     // Let it rip
                     message.channel.send(embed);
                 } else {
-                    // TODO(michaelstone)
+                    // TODO
                     // It's too much to list each move, it frequently goes over the Discord 2k character limit.
                     // To solve this, consolidate down to just the move (e.g. Shoryuken instead of Shoryuken with 3 different buttons after).
                     // Lucky for me, the buttons are always noted as follows:
