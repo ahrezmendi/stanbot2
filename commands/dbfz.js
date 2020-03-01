@@ -55,11 +55,12 @@ module.exports = {
         } else {
             // Main case. Split on the first arg that contains a number or lowercase J preceded by whitespace
             var joinedArgs = args.join(' ');
-            console.log(joinedArgs);
             charName = joinedArgs.split(/(\sj|\d)/)[0].trim();
-            console.log(`${charName}`);
             moveName = joinedArgs.split(/(\sj|\d)/).slice(1).join('').toLowerCase();
         }
+
+        // Special case: Base Vegeta is just "vegeta" in the spreadsheet, but let's be nice and handle "vegeta base" too
+        if (charName == 'vegeta base') charName = 'vegeta';
 
         // Retrieve normal move data
         var moves = sheetsUtil.dbfzCharacterData.get(charName);
@@ -70,7 +71,7 @@ module.exports = {
         // Create an embed and populate with the data
         var embed = new Discord.RichEmbed()
             .setColor('#0099ff')
-            .setTitle(`${util.capitalize(charName)} Normal Move Properties`);
+            .setTitle(`${util.titleCase(charName)} Move Properties (Patch ${sheetsUtil.dbfzCharacterData.get('version').get(charName)})`);
 
         var propsKeyArr = Array.from(props.keys());
 

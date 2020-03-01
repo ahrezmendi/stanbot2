@@ -23,7 +23,7 @@ const sfvCharacters = ["fang", "dhalsim", "vega", "laura", "zangief", "karin", "
 
 const dbfzCharacters = ['android 16', 'android 17', 'android 18', 'android 21', 'broly dbs', 'gohan adult', 'goku ssj',
     'bardock', 'beerus', 'broly', 'cpt ginyu', 'cell', 'cooler', 'frieza', 'gogeta', 'gohan teen', 'goku base', 'goku blue',
-    'goku black', 'gotenks', 'hit', 'janemba', 'jiren', 'kid buu', 'krillin', 'majin buu', 'nappa', 'piccolo', 'tien',
+    'goku black', 'gotenks', 'hit', 'janemba', 'jiren', 'kefla', 'kid buu', 'krillin', 'majin buu', 'nappa', 'piccolo', 'tien',
     'trunks', 'vegeta', 'vegeta ssj', 'vegeta blue', 'vegito', 'videl', 'yamcha', 'zamasu'];
 
 module.exports = {
@@ -121,6 +121,29 @@ module.exports = {
                 // Sheet titles include punctuation, which I don't want. Get rid of it.
                 var cleanTitle = sheet.title.replace(/[^\w\s]/g, '');
 
+                // Introduction sheet contains a table of what version each character data is from. I want this data.
+                if (cleanTitle == 'Introduction') {
+                    var versionData = new Discord.Collection();
+
+                    // The table isn't the only thing on the sheet, so gonna have to do some parsing
+                    var introRows = await sheet.getRows();
+
+                    // The bad news is the sheet header gives me nothing. The good news is the actual table starts with
+                    // always has character names in _rawData[0] so I can just check that.
+                    for (var row of introRows) {
+                        if (!row._rawData[0]) continue;
+                        var character = row._rawData[0].replace(/[^\w\s]/g, '').toLowerCase();
+                        var version = row._rawData[2];
+                        if (dbfzCharacters.includes(character)) {
+                            versionData.set(character, version);
+                        }
+                    }
+
+                    console.log(versionData);
+
+                    dbfzCharacterData.set('version', versionData);
+                }
+
                 // For every sheet I want the title (it is the character name)
                 // var charName = cleanTitle.split(/(?=[A-Z])/).join('').toLowerCase();
                 var charName = cleanTitle.toLowerCase();
@@ -146,7 +169,6 @@ module.exports = {
 
                     // First colum is MOVE which is the move input (names aren't used)
                     var keyName = row.MOVE;
-                    console.log(`Key name: ${keyName}`);
                     if (!keyName) console.error('Critical error while parsing DBFZ spreadsheet. Someone screwed up.');
                     sheetData.set(keyName.toLowerCase(), row);
                 }

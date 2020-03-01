@@ -47,6 +47,6 @@ module.exports = {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 	titleCase(string) {
-		string.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
+		return string.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
 	},
 };
