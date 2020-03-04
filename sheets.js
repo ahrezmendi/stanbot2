@@ -22,7 +22,7 @@ const sfvCharacters = ["fang", "dhalsim", "vega", "laura", "zangief", "karin", "
     "falke", "cody", "g", "sagat", "kage", "poison", "ehonda", "lucia", "gill", "seth"];
 
 const dbfzCharacters = ['android 16', 'android 17', 'android 18', 'android 21', 'broly dbs', 'gohan adult', 'goku ssj',
-    'bardock', 'beerus', 'broly', 'cpt ginyu', 'cell', 'cooler', 'frieza', 'gogeta', 'gohan teen', 'goku base', 'goku blue',
+    'bardock', 'beerus', 'broly', 'cpt ginyu', 'cell', 'cooler', 'frieza', 'gogeta', 'gohan teen', 'goku base', 'goku blue', 'goku gt',
     'goku black', 'gotenks', 'hit', 'janemba', 'jiren', 'kefla', 'kid buu', 'krillin', 'majin buu', 'nappa', 'piccolo', 'tien',
     'trunks', 'vegeta', 'vegeta ssj', 'vegeta blue', 'vegito', 'videl', 'yamcha', 'zamasu'];
 
@@ -147,6 +147,10 @@ module.exports = {
                 // For every sheet I want the title (it is the character name)
                 // var charName = cleanTitle.split(/(?=[A-Z])/).join('').toLowerCase();
                 var charName = cleanTitle.toLowerCase();
+
+                // There are a few edge cases where the sheet name doesn't match the common community name. Adjust them here
+                // to be consistent with the community name.
+                if (charName == 'goku gin tonic') charName = 'goku gt';
 
                 // Check to make sure the character is in the configured character list
                 console.log(`Now processing ${charName}`);

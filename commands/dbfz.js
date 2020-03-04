@@ -66,14 +66,12 @@ module.exports = {
 
         // Special case: Base Vegeta is just "vegeta" in the spreadsheet, but let's be nice and handle "vegeta base" too
         if (charName == 'vegeta base') charName = 'vegeta';
-        // Special case: Goku GT is "Goku (Gin Tonic)" in the sheet as a joke, but that's uncommon in the community. So support "goku gt" too.
-        if (charName == 'goku gt') charName = 'goku gin tonic';
 
         // Retrieve normal move data
         var moves = sheetsUtil.dbfzCharacterData.get(charName);
 
         // If no data, inform the user
-        if(!moves) return message.channel.send(`I'm afraid I don't have any data for ${charName}`);
+        if (!moves) return message.channel.send(`I'm afraid I don't have any data for ${charName}. Please check the spreadsheet/spelling (use !help dbfz).`);
 
         // Create an embed and populate with the data
         var embed = new Discord.RichEmbed()
@@ -83,6 +81,8 @@ module.exports = {
         var propsKeyArr = Array.from(props.keys());
 
         var move = moves.get(moveName);
+
+        if (!move) return message.channel.send(`I'm afraid I don't have the move ${moveName}. Please check the spreadsheet/spelling (use !help dbfz).`);
 
         for (let [key, value] of Object.entries(move)) {
             // Skip anything not in the whitelist
