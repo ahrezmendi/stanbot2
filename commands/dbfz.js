@@ -18,13 +18,13 @@ module.exports = {
     name: 'dbfz',
     description: 'Kamehameha! (This command is still in alpha, ping @Ahrezmendi detailed status).',
     args: true,
-    usage: `<character name> <move input>\n\n
-        E.g. !dbfz goku ssj 5ll\n\n
-        If a character name doesn't work, check the spreadsheet for the correct name (they are taken directly from there).\n
-        For characters with forms, use the name followed by the form (e.g. goku blue, vegeta base). Names like "Bluegeta" are not supported.\n\n
-        NOTE: Assists are not currently supported, only base moves.\n
-        2ND NOTE: The frame data indicates which patch it is from, so be sure to check that before quoting frame data.\n\n
-        All data courtesy of (and credit to) TURTLEON's Frame Data Spreadsheet here:\n
+    usage: `<character name> <move input>\n
+        E.g. !dbfz goku ssj 5ll\n
+        If a character name doesn't work, check the spreadsheet for the correct name (they are taken directly from there).
+        For characters with forms, use the name followed by the form (e.g. goku blue, vegeta base). Names like "Bluegeta" are not supported.\n
+        NOTE: Assists are not currently supported, only base moves.
+        2ND NOTE: The frame data indicates which patch it is from, so be sure to check that before quoting frame data.\n
+        All data courtesy of (and credit to) TURTLEON's Frame Data Spreadsheet here:
         https://docs.google.com/spreadsheets/d/1-p29UmRGIPF6n17ddOEtYfLcn_KRlE2VH6tE61P5UM8/edit#gid=1043945512`,
     execute(message, args) {
         // Special admin command - refreshes data from the Google Sheets sheet.

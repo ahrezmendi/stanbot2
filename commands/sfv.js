@@ -21,12 +21,12 @@ module.exports = {
     name: 'sfv',
     description: 'Rise up.',
     args: true,
-    usage: `character_name command [specific move]]\n\n
+    usage: `character_name command [specific move]]\n
         For example: "!sfv ehonda normal" will give you a list of normal moves (via DM to avoid spamming channels). 
         "!sfv zeku young normal Bushin Sho LP" will give you stats about a specific move. 
-        Note that move names are case sensitive, and you MUST include the button (LP, LK, etc.).\n\n
-        You can also use community names for moves, e.g. "!sfv ryu normal overhead".\n\n
-        All data courtesy of the SFV FAT Spreadsheet here:\n
+        Note that move names are case sensitive, and you MUST include the button (LP, LK, etc.).\n
+        You can also use community names for moves, e.g. "!sfv ryu normal overhead".\n
+        All data courtesy of the SFV FAT Spreadsheet here:
         https://docs.google.com/spreadsheets/d/1nlbWon7SYhhO5TSpNx06qQrw2TRDEZ85HQrNherXioY/edit?usp=sharing`,
     execute(message, args) {
         // Special admin command - refreshes data from the Google Sheets sheet.
