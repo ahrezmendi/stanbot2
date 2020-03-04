@@ -66,6 +66,8 @@ module.exports = {
 
         // Special case: Base Vegeta is just "vegeta" in the spreadsheet, but let's be nice and handle "vegeta base" too
         if (charName == 'vegeta base') charName = 'vegeta';
+        // Special case: Goku GT is "Goku (Gin Tonic)" in the sheet as a joke, but that's uncommon in the community. So support "goku gt" too.
+        if (charName == 'goku gt') charName = 'goku gin tonic';
 
         // Retrieve normal move data
         var moves = sheetsUtil.dbfzCharacterData.get(charName);
