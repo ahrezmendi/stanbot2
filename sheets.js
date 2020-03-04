@@ -76,8 +76,12 @@ module.exports = {
                     // Edge Case: Turns out Gill has 'move' instead of 'moveName'. So check that after assigning.
                     var keyName = row.hasOwnProperty('moveName') ? row.moveName : row.name;
                     if (!keyName) keyName = row.move; // Thanks, Gill. Emperors always gotta be different.
-                    if (!keyName) console.error('Critical error while parsing SFV spreadsheet. Someone screwed up.');
-                    sheetData.set(keyName.toLowerCase(), row);
+                    if (!keyName) {
+                        console.error(`No moveName or move value found for row:`);
+                        console.error(row);
+                        continue;
+                    }
+                    sheetData.set(keyName.toLowerCase().trim(), row);
                 }
 
                 // Check if this character is already in the data (e.g. from loading other sheet data)
@@ -173,8 +177,12 @@ module.exports = {
 
                     // First colum is MOVE which is the move input (names aren't used)
                     var keyName = row.MOVE;
-                    if (!keyName) console.error('Critical error while parsing DBFZ spreadsheet. Someone screwed up.');
-                    sheetData.set(keyName.toLowerCase(), row);
+                    if (!keyName) {
+                        console.error(`No moveName or move value found for row:`);
+                        console.error(row);
+                        continue;
+                    }
+                    sheetData.set(keyName.toLowerCase().trim(), row);
                 }
 
                 dbfzCharacterData.set(charName, sheetData);

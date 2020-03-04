@@ -116,6 +116,10 @@ module.exports = {
                         }
                     }
 
+                    if (!move) {
+                        return message.channel.send(`I wasn't able to find move data for that move. Sorry!`);
+                    }
+
                     for (let [key, value] of Object.entries(move)) {
                         // Skip anything not in the whitelist
                         if (propsKeyArr.includes(key)) {
