@@ -25,6 +25,7 @@ const dbfzCharacters = ['android 16', 'android 17', 'android 18', 'android 21', 
     'bardock', 'beerus', 'broly', 'cpt ginyu', 'cell', 'cooler', 'frieza', 'gogeta', 'gohan teen', 'goku base', 'goku blue', 'goku gt',
     'goku black', 'gotenks', 'hit', 'janemba', 'jiren', 'kefla', 'kid buu', 'krillin', 'majin buu', 'nappa', 'piccolo', 'tien',
     'trunks', 'vegeta', 'vegeta ssj', 'vegeta blue', 'vegito', 'videl', 'yamcha', 'zamasu'];
+// const dbfzCharacters = ['cell'];
 
 module.exports = {
     // Main loading function, calls all individual sheet loading functions
@@ -142,8 +143,6 @@ module.exports = {
                             versionData.set(character, version);
                         }
                     }
-
-                    console.log(versionData);
 
                     dbfzCharacterData.set('version', versionData);
                 }
