@@ -8,9 +8,9 @@ client.commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 
 const activities_list = [
-	'!help to see what I can do! (DM or in any text channel)',
-	'!help',
-	'!help for great awesome!'
+	`${prefix}help to see what I can do! (DM or in any text channel)`,
+	`${prefix}help`,
+	`${prefix}help for great awesome!`
 ];
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
