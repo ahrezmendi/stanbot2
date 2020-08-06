@@ -1,7 +1,7 @@
 const util = require('../util');
 const { prefix, token, apikey } = require('../config.json');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const sheetsUtil = require('../sheets');
+const {sfvCharacterData, loadSFVData} = require('../sheets');
 const Discord = require('discord.js');
 
 // List of the move properties we actually give a shit about
@@ -22,8 +22,8 @@ module.exports = {
     description: 'Rise up.',
     args: true,
     usage: `character_name command [specific move]]\n
-        For example: "!sfv ehonda normal" will give you a list of normal moves (via DM to avoid spamming channels). 
-        "!sfv zeku young normal Bushin Sho LP" will give you stats about a specific move. 
+        For example: "sfv ehonda normal" will give you a list of normal moves (via DM to avoid spamming channels). 
+        "sfv zeku young normal Bushin Sho LP" will give you stats about a specific move. 
         Note that move names are case sensitive, and you MUST include the button (LP, LK, etc.).\n
         You can also use community names for moves, e.g. "!sfv ryu normal overhead".\n
         All data courtesy of the SFV FAT Spreadsheet here:
@@ -34,7 +34,7 @@ module.exports = {
             util.performAdminCheck(message);
             // Refreshes the data from the spreadsheet. This is slow, so don't do it often. It will also block the bot.
             async function refreshData() {
-                await sheetsUtil.refreshSFVData();
+                await loadSFVData();
             }
 
             refreshData();
@@ -67,13 +67,13 @@ module.exports = {
         switch (command) {
             case 'stats':
                 // Retrieve that character stats sheet from the data collection
-                var stats = sheetsUtil.sfvCharacterData.get(charName).get('stats');
+                var stats = sfvCharacterData.get(charName).get('stats');
 
                 // If no data, inform the user
                 if(!stats) return message.channel.send(`I'm afraid I don't have any data for ${charName} ${command}`);
 
                 // Create an embed and populate with the data
-                var embed = new Discord.RichEmbed()
+                var embed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle(`${util.capitalize(charName)} Vital Statistics`);
 
@@ -86,7 +86,7 @@ module.exports = {
                 break;
             case 'normal':
                 // Retrieve normal move data
-                var moves = sheetsUtil.sfvCharacterData.get(charName).get('normal');
+                var moves = sfvCharacterData.get(charName).get('normal');
 
                 // If no data, inform the user
                 if(!moves) return message.channel.send(`I'm afraid I don't have any data for ${charName} ${command}`);
@@ -96,7 +96,7 @@ module.exports = {
                 // If they requested a specific move, that can be an embed.
                 if (isSpecificMove) {
                     // Create an embed and populate with the data
-                    var embed = new Discord.RichEmbed()
+                    var embed = new Discord.MessageEmbed()
                         .setColor('#0099ff')
                         .setTitle(`${util.capitalize(charName)} Normal Move Properties`);
 
@@ -157,13 +157,13 @@ module.exports = {
                 break;
             case 'trigger1':
                 // Retrieve VT1 move data
-                var vt1moves = sheetsUtil.sfvCharacterData.get(charName).get('trigger1');
+                var vt1moves = sfvCharacterData.get(charName).get('trigger1');
 
                 // If no data, inform the user
                 if(!vt1moves) return message.channel.send(`I'm afraid I don't have any data for ${charName} ${command}`);
 
                 // Create an embed and populate with the data
-                var embed = new Discord.RichEmbed()
+                var embed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle(`${util.capitalize(charName)} VT1 Changed Moves`);
 
@@ -176,13 +176,13 @@ module.exports = {
                 break;
             case 'trigger2':
                 // Retrieve VT1 move data
-                var vt2moves = sheetsUtil.sfvCharacterData.get(charName).get('trigger2');
+                var vt2moves = sfvCharacterData.get(charName).get('trigger2');
 
                 // If no data, inform the user
                 if(!vt2moves) return message.channel.send(`I'm afraid I don't have any data for ${charName} ${command}`);
 
                 // Create an embed and populate with the data
-                var embed = new Discord.RichEmbed()
+                var embed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle(`${util.capitalize(charName)} VT2 Changed Moves`);
 

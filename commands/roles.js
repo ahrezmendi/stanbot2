@@ -9,14 +9,15 @@ module.exports = {
         if (!util.performDmCheck(message)) return;
 
         // Get the bots role position. It can only assign roles *below* it (Discord requirement)
-        let myRole = message.guild.roles.find(role => role.name === "Stanbot 2.0");
+        let myRole = message.guild.roles.cache.find(role => role.name === "Stanbot 2.0");
 
         // Get the list of all roles that the bot can assign
         var roleNames = [];
-        for (const role of message.guild.roles.values()) {
+        for (const role of message.guild.roles.cache.values()) {
             // Can't assign managed roles or roles that are higher than the bots role
             // Also don't list @everyone
-            if (!role.managed && role.calculatedPosition <= myRole.calculatedPosition && role.name != '@everyone') {
+            console.log(role);
+            if (!role.managed && role.position <= myRole.position && role.name != '@everyone') {
                 roleNames.push(role.name);
             }
         }
@@ -45,12 +46,12 @@ module.exports = {
         }
 
         // Get the actual Role object and join
-        var role = message.guild.roles.find(r => r.name === roleToJoin);
+        var role = message.guild.roles.cache.find(r => r.name === roleToJoin);
 
         // Switch on args[0] for each command arg
         switch (args[0]) {
             case 'join':
-                message.member.addRole(role).then(success => {
+                message.member.roles.add(role).then(success => {
                     util.performSuccessReact(message);
                 }).catch(error => {
                     console.log(error);
@@ -59,7 +60,7 @@ module.exports = {
                 });
                 break;
             case 'leave':
-                message.member.removeRole(role).then(success => {
+                message.member.roles.remove(role).then(success => {
                     util.performSuccessReact(message);
                 }).catch(error => {
                     console.log(error);

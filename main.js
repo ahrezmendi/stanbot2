@@ -1,8 +1,15 @@
 const fs = require('fs');
-const { prefix, token } = require('./config.json');
+const { prefix, token, sqlitepath } = require('./config.json');
 const Discord = require('discord.js');
 const sheetsUtil = require('./sheets');
 const settings = require('./commands/settings.js');
+const Keyv = require('keyv');
+
+// Set up SQLite DB connections
+const voiceCategories = new Keyv(sqlitepath, { namespace: 'voice' });
+
+// Handle DB connection errors
+voiceCategories.on('error', err => console.log('SQLite Connection Error', err));
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -28,7 +35,7 @@ client.once('ready', () => {
 			.then(console.log)
 			.catch(console.error);
 	}, 10000000); // Runs this every 10,000 seconds.
-	sheetsUtil.loadSpreadsheetData();
+	//sheetsUtil.loadSpreadsheetData();
 	console.log('Ready!');
 });
 
@@ -95,20 +102,25 @@ client.on('message', message => {
 });
 
 // Main entrypoint for handling voice status changes
-client.on('voiceStateUpdate', (oldMember, newMember) => {
-	if(newMember.voiceChannelID == undefined) {
-		// Someone just left a voice channel, so determine what channel it was
-		let ch = oldMember.voiceChannel;
+client.on('voiceStateUpdate', (oldState, newState) => {
+	async function deleteVoiceChannel() {
+		if (newState.channelID == undefined) {
+			// Someone just left a voice channel, so determine what channel it was
+			let ch = oldState.channel;
 
-		// See if this channel is in the On-Demand section
-		let category = ch.parent.name;
-		if(category.toLowerCase() == `${settings.voicecategory}`) {
-			// See if the channel is now empty. If it is, clean it up.
-			if(ch.members.size <= 0) {
-				ch.delete();
+			// See if this channel is in the On-Demand section
+			let channelCategory = ch.parent.name;
+			let voiceCategory = await voiceCategories.get(oldState.guild.id);
+			console.log(voiceCategory);
+			if (channelCategory.toLowerCase() == `${voiceCategory}`) {
+				// See if the channel is now empty. If it is, clean it up.
+				if (ch.members.size <= 0) {
+					ch.delete();
+				}
 			}
 		}
 	}
+	deleteVoiceChannel();
 })
 
 client.login(token);

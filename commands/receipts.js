@@ -1,6 +1,7 @@
 // Proof that you said something, without having to use search
 const Discord = require('discord.js');
 const util = require('../util');
+const { prefix } = require('../config.json');
 
 var receipts = new Discord.Collection();
 
@@ -22,10 +23,10 @@ module.exports = {
     description: "You said it, and everyone knows!",
     args: true,
     usage: `supports the following arguments: store | list | retrieve.\n\n
-        You can store up to 10 receipts using store, e.g. '!receipts store <the rest of your message is stored as the receipt>'.\n
-        You can list your stored receipts (via DM), e.g. '!receipts list'. This will list them in order they were stored.\n
-        You can get a specific receipt (in the channel), e.g. '!receipts retrieve 3' will get the 3rd receipt you stored (or tell you if you didn't store one).\n
-        You can delete a receipt, e.g. '!receipts delete 4' will delete the 4th receipt you stores (or tell you if you don't have that many).`,
+        You can store up to 10 receipts using store, e.g. '${prefix}receipts store <the rest of your message is stored as the receipt>'.\n
+        You can list your stored receipts (via DM), e.g. '${prefix}receipts list'. This will list them in order they were stored.\n
+        You can get a specific receipt (in the channel), e.g. '${prefix}receipts retrieve 3' will get the 3rd receipt you stored (or tell you if you didn't store one).\n
+        You can delete a receipt, e.g. '${prefix}receipts delete 4' will delete the 4th receipt you stores (or tell you if you don't have that many).`,
     execute(message, args) {
         if (!args.length) return util.replyToUserWithMessage(message, `I need to know if you want to store, list, or retrieve receipts ${message.author}!`);
 
@@ -48,6 +49,10 @@ module.exports = {
                     userReceipts.push(receiptText);
                     receipts.set(message.author, userReceipts);
                 }
+
+                // Write the receipts collection to disk
+                util.writeJsonToFile(Object.fromEntries(receipts), "receipts.json");
+                
                 break;
             case 'list':
                 if (!userHasReceipts(message, args)) return;

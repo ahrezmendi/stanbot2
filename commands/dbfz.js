@@ -1,5 +1,5 @@
 const util = require('../util');
-const sheetsUtil = require('../sheets');
+const {dbfzCharacterData, loadDbfzData} = require('../sheets');
 const Discord = require('discord.js');
 
 // List of the move properties we actually give a shit about
@@ -19,7 +19,7 @@ module.exports = {
     description: 'Kamehameha! (This command is still in alpha, ping @Ahrezmendi detailed status).',
     args: true,
     usage: `<character name> <move input>\n
-        E.g. !dbfz goku ssj 5ll\n
+        E.g. dbfz goku ssj 5ll\n
         If a character name doesn't work, check the spreadsheet for the correct name (they are taken directly from there).
         For characters with forms, use the name followed by the form (e.g. goku blue, vegeta base). Names like "Bluegeta" are not supported.\n
         NOTE: Assists are not currently supported, only base moves.
@@ -32,7 +32,7 @@ module.exports = {
             util.performAdminCheck(message);
             // Refreshes the data from the spreadsheet. This is slow, so don't do it often. It will also block the bot.
             async function refreshData() {
-                await sheetsUtil.refreshDbfzData();
+                await loadDbfzData();
             }
 
             refreshData();
@@ -68,15 +68,15 @@ module.exports = {
         if (charName == 'vegeta base') charName = 'vegeta';
 
         // Retrieve normal move data
-        var moves = sheetsUtil.dbfzCharacterData.get(charName);
+        var moves = dbfzCharacterData.get(charName);
 
         // If no data, inform the user
         if (!moves) return message.channel.send(`I'm afraid I don't have any data for ${charName}. Please check the spreadsheet/spelling (use !help dbfz).`);
 
         // Create an embed and populate with the data
-        var embed = new Discord.RichEmbed()
+        var embed = new Discord.MessageEmbed()
             .setColor('#0099ff')
-            .setTitle(`${util.titleCase(charName)} Move Properties (Patch ${sheetsUtil.dbfzCharacterData.get('version').get(charName)})`);
+            .setTitle(`${util.titleCase(charName)} Move Properties (Patch ${dbfzCharacterData.get('version').get(charName)})`);
 
         var propsKeyArr = Array.from(props.keys());
 

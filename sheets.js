@@ -9,8 +9,8 @@ const sfvDoc = new GoogleSpreadsheet('1nlbWon7SYhhO5TSpNx06qQrw2TRDEZ85HQrNherXi
 const dbfzDoc = new GoogleSpreadsheet('1-p29UmRGIPF6n17ddOEtYfLcn_KRlE2VH6tE61P5UM8');
 
 // Exported variables, which can be used in other modules
-var sfvCharacterData = new Discord.Collection();
-var dbfzCharacterData = new Discord.Collection();
+var sfvCharacterData = new Map();
+var dbfzCharacterData = new Map();
 
 // Set document API Keys here
 sfvDoc.useApiKey(apikey);
@@ -78,8 +78,8 @@ module.exports = {
                     var keyName = row.hasOwnProperty('moveName') ? row.moveName : row.name;
                     if (!keyName) keyName = row.move; // Thanks, Gill. Emperors always gotta be different.
                     if (!keyName) {
-                        console.error(`No moveName or move value found for row:`);
-                        console.error(row);
+                        // console.error(`No moveName or move value found for row:`);
+                        // console.error(row);
                         continue;
                     }
                     sheetData.set(keyName.toLowerCase().trim(), row);
@@ -97,8 +97,8 @@ module.exports = {
                 }
 
                 // Google has quota for API access (100 requests per 100 seconds). To handle this, the bot will sleep 2 seconds after every sheet load.
-                console.log("Sleeping 4 seconds before next sheet (rate limits).");
-                await util.sleep(4000);
+                console.log("Sleeping 5 seconds before next sheet (rate limits).");
+                await util.sleep(5000);
             }
 
             // Done (I think?)
@@ -177,8 +177,8 @@ module.exports = {
                     // First colum is MOVE which is the move input (names aren't used)
                     var keyName = row.MOVE;
                     if (!keyName) {
-                        console.error(`No moveName or move value found for row:`);
-                        console.error(row);
+                        // console.error(`No moveName or move value found for row:`);
+                        // console.error(row);
                         continue;
                     }
                     sheetData.set(keyName.toLowerCase().trim(), row);
@@ -187,8 +187,8 @@ module.exports = {
                 dbfzCharacterData.set(charName, sheetData);
 
                 // Google has quota for API access (100 requests per 100 seconds). To handle this, the bot will sleep 2 seconds after every sheet load.
-                console.log("Sleeping 4 seconds before next sheet (rate limits).");
-                await util.sleep(4000);
+                console.log("Sleeping 5 seconds before next sheet (rate limits).");
+                await util.sleep(5000);
             }
 
             // Done (I think?)
