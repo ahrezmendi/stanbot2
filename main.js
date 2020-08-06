@@ -2,6 +2,7 @@ const fs = require('fs');
 const { prefix, token } = require('./config.json');
 const Discord = require('discord.js');
 const sheetsUtil = require('./sheets');
+const settings = require('./commands/settings.js');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -92,5 +93,22 @@ client.on('message', message => {
 		message.reply('there was an error trying to execute that command!');
 	}
 });
+
+// Main entrypoint for handling voice status changes
+client.on('voiceStateUpdate', (oldMember, newMember) => {
+	if(newMember.voiceChannelID == undefined) {
+		// Someone just left a voice channel, so determine what channel it was
+		let ch = oldMember.voiceChannel;
+
+		// See if this channel is in the On-Demand section
+		let category = ch.parent.name;
+		if(category.toLowerCase() == `${settings.voicecategory}`) {
+			// See if the channel is now empty. If it is, clean it up.
+			if(ch.members.size <= 0) {
+				ch.delete();
+			}
+		}
+	}
+})
 
 client.login(token);

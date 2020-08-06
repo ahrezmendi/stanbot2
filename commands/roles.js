@@ -17,7 +17,7 @@ module.exports = {
             // Can't assign managed roles or roles that are higher than the bots role
             // Also don't list @everyone
             if (!role.managed && role.calculatedPosition <= myRole.calculatedPosition && role.name != '@everyone') {
-                roleNames.push(role.name.toLowerCase());
+                roleNames.push(role.name);
             }
         }
 
@@ -36,7 +36,7 @@ module.exports = {
         }
 
         // Get the role name. Role names can be many strings, so assume the rest of the args are the role name.
-        var roleToJoin = `${args.slice(1).join(' ').toLowerCase()}`;
+        var roleToJoin = `${args.slice(1).join(' ')}`;
 
         // Make sure it's in our valid role list
         if (!roleNames.includes(roleToJoin)) {
@@ -55,6 +55,7 @@ module.exports = {
                 }).catch(error => {
                     console.log(error);
                     util.performFailReact(message);
+                    return util.replyToUserWithMessage(message, `I couldn't add you to that role. Did you spell the role name correctly? It is case sensitive.`);
                 });
                 break;
             case 'leave':
@@ -63,6 +64,7 @@ module.exports = {
                 }).catch(error => {
                     console.log(error);
                     util.performFailReact(message);
+                    return util.replyToUserWithMessage(message, `I couldn't remove you from that role. Did you spell the role name correctly? It is case sensitive.`);
                 });
                 break;
             default:
