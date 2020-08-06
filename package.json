@@ -22,13 +22,16 @@
   },
   "homepage": "https://github.com/ahrezmendi/stanbot2#readme",
   "dependencies": {
-    "@types/node": "^13.7.1",
-    "discord.js": "^11.5.1",
+    "@discordjs/uws": "^10.149.0",
+    "@keyv/sqlite": "^2.0.2",
+    "@types/node": "^13.13.15",
+    "discord.js": "^12.2.0",
     "eslint": "^6.8.0",
     "google-spreadsheet": "^3.0.8",
+    "keyv": "^4.0.1",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "jasmine": "^3.5.0"
+    "jasmine": "^3.6.1"
   }
 }
