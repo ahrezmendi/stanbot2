@@ -1,22 +1,13 @@
 // Proof that you said something, without having to use search
 const Discord = require('discord.js');
 const util = require('../util');
-const { prefix } = require('../config.json');
+const { prefix, sqlitepath } = require('../config.json');
+const Keyv = require('keyv');
 
-var receipts = new Discord.Collection();
-
-function userHasReceipts(message, args) {
-    if (!receipts.has(message.author) || receipts.get(message.author).length == 0) {
-        message.author.send(`I don't have any of your receipts. Check with your tax accountant.`);
-        return false;
-    }
-    userReceipts = receipts.get(message.author);
-    if (userReceipts.length < args[1]) {
-        message.author.send(`You haven't given me that many receipts. Maybe it's still in your pocket?`);
-        return false;
-    }
-    return true;
-};
+var receipts = [];
+const receiptsStorage = new Keyv(sqlitepath, { namespace: 'receipts' });
+// Handle DB connection errors
+receiptsStorage.on('error', err => console.log('SQLite Connection Error', err));
 
 module.exports = {
     name: 'receipts',
@@ -27,60 +18,74 @@ module.exports = {
         You can list your stored receipts (via DM), e.g. '${prefix}receipts list'. This will list them in order they were stored.\n
         You can get a specific receipt (in the channel), e.g. '${prefix}receipts retrieve 3' will get the 3rd receipt you stored (or tell you if you didn't store one).\n
         You can delete a receipt, e.g. '${prefix}receipts delete 4' will delete the 4th receipt you stores (or tell you if you don't have that many).`,
-    execute(message, args) {
+    async execute(message, args) {
         if (!args.length) return util.replyToUserWithMessage(message, `I need to know if you want to store, list, or retrieve receipts ${message.author}!`);
 
         var cmd = args[0].toLowerCase();
-        let userReceipts;
         let receiptText;
         let receiptIndex;
 
+        // Before doing anything, get this users receipts (if any) from storage
+        // This is a ready per command invocation. Find a better way to do this maybe?
+        let receiptData = await receiptsStorage.get(message.author.id);
+        console.log(receiptData);
+        if (receiptData == undefined) {
+            receipts = [];
+        } else {
+            receipts = JSON.parse(receiptData);
+        }
+        console.log(receipts);
+        console.log(typeof receipts);
+
+        // Quick helper function
+        function checkReceiptValidity() {
+            if (receipts.length == 0) return message.author.send(`I don't have any of your receipts. Check with your tax accountant.`);
+            if (receipts.length < args[1]) return message.author.send(`You haven't given me that many receipts. Maybe it's still in your pocket?`);
+        }
+
         switch (cmd) {
             case 'store':
-                // Get the existing set of receipts for the author. If they have none, create a new array.
+                // Get the receipt text
                 receiptText = args.slice(1).join(' ');
-                if (!receipts.has(message.author)) {
-                    userReceipts = [receiptText];
-                    receipts.set(message.author, userReceipts);
-                } else {
-                    userReceipts = receipts.get(message.author);
-                    // Make sure they don't already have 10 receipts (just to keep a cap on this)
-                    if (userReceipts.length >= 10) return message.author.send(`You've already stored 10 receipts. Clear some out, I'm not a filing cabinet!`);
-                    userReceipts.push(receiptText);
-                    receipts.set(message.author, userReceipts);
-                }
 
+                // Add the receipt to the users list
+                receipts.push(receiptText);
+
+                console.log(receipts);
+                console.log(message.author.id);
                 // Write the receipts collection to disk
-                util.writeJsonToFile(Object.fromEntries(receipts), "receipts.json");
-                
+                await receiptsStorage.set(message.author.id, JSON.stringify(receipts));
+
+                // DEBUG
+                let rec = await receiptsStorage.get(message.author.id);
+                console.log(rec);
+
                 break;
             case 'list':
-                if (!userHasReceipts(message, args)) return;
+                checkReceiptValidity();
 
-                userReceipts = receipts.get(message.author);
                 var msgText = `Here are all your receipts ${message.author}\n\n`;
-
-                for (let i = 0; i < userReceipts.length; i++) {
-                    msgText += `Receipt #${i + 1}:\n${userReceipts[i]}\n\n`;
+                for (let i = 0; i < receipts.length; i++) {
+                    msgText += `Receipt #${i + 1}:\n${receipts[i]}\n\n`;
                 }
 
                 message.author.send(msgText);
                 break;
             case 'retrieve':
-                if (!userHasReceipts(message, args)) return;
-
-                userReceipts = receipts.get(message.author);
+                checkReceiptValidity();
+                
                 receiptIndex = parseInt(args[1]) - 1;
-                receiptText = userReceipts[receiptIndex];
+                receiptText = receipts[receiptIndex];
                 message.channel.send(`${message.author} has a verified receipt for the following:\n${receiptText}`);
                 break;
             case 'delete':
-                if (!userHasReceipts(message, args)) return;
+                checkReceiptValidity();
 
-                userReceipts = receipts.get(message.author);
                 receiptIndex = parseInt(args[1]) - 1;
-                userReceipts.splice(receiptIndex, 1);
-                receipts.set(message.author, userReceipts);
+                receipts.splice(receiptIndex, 1);
+
+                // Write the receipts collection to disk
+                await receiptsStorage.set(message.author.id, JSON.stringify(receipts));
                 break;
             default:
                 return util.performFailReact(message);

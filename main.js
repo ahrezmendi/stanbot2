@@ -2,7 +2,6 @@ const fs = require('fs');
 const { prefix, token, sqlitepath } = require('./config.json');
 const Discord = require('discord.js');
 const sheetsUtil = require('./sheets');
-const settings = require('./commands/settings.js');
 const Keyv = require('keyv');
 
 // Set up SQLite DB connections

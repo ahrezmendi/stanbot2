@@ -1,4 +1,3 @@
-var settings = require('./settings.js');
 const util = require('../util');
 const { sqlitepath } = require('../config.json');
 const Keyv = require('keyv');
