@@ -6,6 +6,7 @@ const Keyv = require('keyv');
 
 // Set up SQLite DB connections
 const voiceCategories = new Keyv(sqlitepath, { namespace: 'voice' });
+const defaultCategory = 'on-demand voice';
 
 // Handle DB connection errors
 voiceCategories.on('error', err => console.log('SQLite Connection Error', err));
@@ -34,7 +35,7 @@ client.once('ready', () => {
 			.then(console.log)
 			.catch(console.error);
 	}, 10000000); // Runs this every 10,000 seconds.
-	sheetsUtil.loadSpreadsheetData();
+	//sheetsUtil.loadSpreadsheetData();
 	console.log('Ready!');
 });
 
@@ -109,8 +110,8 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
 			// See if this channel is in the On-Demand section
 			let channelCategory = ch.parent.name;
-			let voiceCategory = await voiceCategories.get(oldState.guild.id);
-			console.log(voiceCategory);
+			let voiceCategory = await voiceCategories.get(newState.guild.id);
+			if (voiceCategory == undefined) voiceCategory = defaultCategory;
 			if (channelCategory.toLowerCase() == `${voiceCategory}`) {
 				// See if the channel is now empty. If it is, clean it up.
 				if (ch.members.size <= 0) {
