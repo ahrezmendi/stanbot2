@@ -28,14 +28,11 @@ module.exports = {
         // Before doing anything, get this users receipts (if any) from storage
         // This is a ready per command invocation. Find a better way to do this maybe?
         let receiptData = await receiptsStorage.get(message.author.id);
-        console.log(receiptData);
         if (receiptData == undefined) {
             receipts = [];
         } else {
             receipts = JSON.parse(receiptData);
         }
-        console.log(receipts);
-        console.log(typeof receipts);
 
         // Quick helper function
         function checkReceiptValidity() {
@@ -51,14 +48,8 @@ module.exports = {
                 // Add the receipt to the users list
                 receipts.push(receiptText);
 
-                console.log(receipts);
-                console.log(message.author.id);
                 // Write the receipts collection to disk
                 await receiptsStorage.set(message.author.id, JSON.stringify(receipts));
-
-                // DEBUG
-                let rec = await receiptsStorage.get(message.author.id);
-                console.log(rec);
 
                 break;
             case 'list':

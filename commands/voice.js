@@ -47,7 +47,6 @@ module.exports = {
                 // Look up the per-guild category, otherwise use default
                 let guildCategory = await voiceCategories.get(message.guild.id);
                 if (guildCategory == undefined) guildCategory = defaultCategory;
-                console.log(guildCategory);
 
                 // Check the category exists/is set correctly
                 let category = message.guild.channels.cache.find(c => c.name.toLowerCase() == `${guildCategory}` && c.type == "category");
