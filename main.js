@@ -34,7 +34,7 @@ client.once('ready', () => {
 			.then(console.log)
 			.catch(console.error);
 	}, 10000000); // Runs this every 10,000 seconds.
-	//sheetsUtil.loadSpreadsheetData();
+	sheetsUtil.loadSpreadsheetData();
 	console.log('Ready!');
 });
 
