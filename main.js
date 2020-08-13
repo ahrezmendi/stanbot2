@@ -31,11 +31,11 @@ for (const file of commandFiles) {
 client.once('ready', () => {
 	setInterval(() => {
 		const index = Math.floor(Math.random() * (activities_list.length - 1) + 1);
-		client.user.setPresence({ game: { name: activities_list[index] }, status: 'available' })
+		client.user.setPresence({ activity: { name: activities_list[index] }, status: 'available' })
 			.then(console.log)
 			.catch(console.error);
 	}, 10000000); // Runs this every 10,000 seconds.
-	//sheetsUtil.loadSpreadsheetData();
+	sheetsUtil.loadSpreadsheetData();
 	console.log('Ready!');
 });
 
@@ -116,6 +116,12 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 				// See if the channel is now empty. If it is, clean it up.
 				if (ch.members.size <= 0) {
 					ch.delete();
+
+					// For good measure, pick a new status
+					let statusIndex = Math.floor(Math.random() * (activities_list.length - 1) + 1);
+					client.user.setPresence({ activity: { name: activities_list[statusIndex] }, status: 'available' })
+						.then(console.log)
+						.catch(console.error);
 				}
 			}
 		}
