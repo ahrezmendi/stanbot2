@@ -29,7 +29,7 @@
     "eslint": "^6.8.0",
     "google-spreadsheet": "^3.0.8",
     "keyv": "^4.0.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^3.1.1"
   },
   "devDependencies": {
     "jasmine": "^3.6.1"
